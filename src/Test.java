@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Test {
     public static void main(String[] args) {
 
@@ -22,5 +25,54 @@ public class Test {
         Print how many students are MathStudent with message -> "Math students = {numberOfMathStudents}"
         Print how many students are ScienceStudent with message -> "Science students = {numberOfScienceStudents}"
          */
-    }
-}
+
+        Scanner input = new Scanner(System.in);
+        ArrayList<Student> students = new ArrayList<>();
+
+        int Student = 0;
+        do{
+            System.out.println(UserQuestions.askToJoin);
+            String answer = input.next();
+
+            if(answer.toUpperCase().startsWith("N")) continue;
+            else if(answer.toUpperCase().startsWith("Y")) {
+                try {
+                    System.out.println(UserQuestions.askFirstName);
+                    String firstName = input.next();
+
+                    System.out.println(UserQuestions.askLastName);
+                    String lastName = input.next();
+
+                    System.out.println(UserQuestions.askAge);
+                    int age = input.nextInt();
+                    Permission.checkAge(age);
+
+                    System.out.println(UserQuestions.askGender);
+                    String gender = input.next();
+
+                    System.out.println(UserQuestions.askClassName);
+                    String className = input.next();
+                    Permission.checkClassName(className);
+
+                    if (className.equalsIgnoreCase("math")) students.add(
+                            new MathStudent(firstName, lastName, age, gender, className));
+                    else students.add(new ScienceStudent(firstName, lastName, age, gender, className));
+                    Student++;
+
+                    System.out.println("Congratulations! You are registered for " + className + " class.");
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }while (students.size() < 3);
+
+
+        students.forEach(System.out::println);
+        System.out.println("Math students = " + (int) students.stream().filter(element -> element.getClassName().equalsIgnoreCase("Math")).count());
+        System.out.println("Science students = " + (int) students.stream().filter(element -> element.getClassName().equalsIgnoreCase("Science")).count());
+
+    }}
+
+
+
